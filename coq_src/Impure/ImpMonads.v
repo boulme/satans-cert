@@ -26,7 +26,7 @@ Module Type MayReturnMonad.
      mayRet (bind k1 k2) b -> exists a:A, mayRet k1 a /\ mayRet (k2 a) b.
 
 
-(* Observational Equivalence *)
+ (* Observational Equivalence *)
  
   Axiom impeq: forall {A}, t A -> t A -> Prop.
 

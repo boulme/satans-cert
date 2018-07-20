@@ -134,15 +134,40 @@ Obligation 3.
 Qed.
 Extraction Inline loop_until_None.
 
+(********************************)
+(* Axioms of Physical equality  *)
+
+Module Type PhysEq.
+
+Axiom phys_eq: forall {A}, A -> A -> ?? bool.
+
+Axiom phys_eq_correct: forall A (x y:A), WHEN phys_eq x y ~> b THEN b=true -> x=y.
+
+End PhysEq.
+
+(* We only check here that above axioms are not trivially inconsistent...
+   (but this does not prove the correctness of the extraction directive below).
+ *)
+Module PhysEqModel: PhysEq.
+
+Definition phys_eq {A} (x y: A) := ret false.
+
+Lemma phys_eq_correct: forall A (x y:A), WHEN phys_eq x y ~> b THEN b=true -> x=y.
+Proof.
+  wlp_simplify. discriminate.
+Qed.
+
+End PhysEqModel.
+
+Export PhysEqModel.
+
+Extract Constant phys_eq => "(==)".
+Hint Resolve phys_eq_correct: wlp.
+
 
 (*********************************************)
 (* A generic fixpoint from an equality test  *)
 
-Axiom phys_eq: forall {A}, A -> A -> ?? bool.
-Extract Constant phys_eq => "(==)".
-
-Axiom phys_eq_correct: forall A (x y:A), WHEN phys_eq x y ~> b THEN b=true -> x=y.
-Hint Resolve phys_eq_correct: wlp.
 
 Record answ {A B: Type} {R: A -> B -> Prop} := {
   input: A ;
