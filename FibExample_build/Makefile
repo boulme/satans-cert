@@ -21,7 +21,7 @@ $(SRCD)/Impure/ImpExtern.vo: $(SRCD)/Makefile $(SRCD)/Impure/*.v
 	$(MAKE) -C $(SRCD) -j Impure/ImpExtern.vo
 
 $(SRCD)/Impure/FibExample.vo coq_extracted: Makefile $(SRCD)/Impure/ImpExtern.vo $(SRCD)/Impure/FibExample.v
-	rm -rf coq_extracted && mkdir coq_extracted && cd coq_extracted && coqc  -R ../$(SRCD) "CertUnsat" -I ../$(SRCD) ../$(SRCD)/Impure/FibExample.v
+	rm -rf coq_extracted && mkdir coq_extracted && cd coq_extracted && coqc  -R ../$(SRCD) "SatansCert" -I ../$(SRCD) ../$(SRCD)/Impure/FibExample.v
 
 clean:
 	$(OCB) -clean
@@ -29,4 +29,4 @@ clean:
 
 cleanall: clean
 	$(MAKE) -C $(SRCD) cleanall
-	rm -rf $(SRCD)/*.vo $(SRCD)/Makefile.*
+	rm -rf $(SRCD)/Makefile* $(SRCD)/Impure/*.vo $(SRCD)/Impure/*.d $(SRCD)/Impure/*.glob $(SRCD)/Impure/.*.aux
