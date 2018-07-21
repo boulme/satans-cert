@@ -100,7 +100,10 @@ let try_with_any: (unit -> 'a) * (exn -> 'a) -> 'a
     with
     | e -> k2 e
 
-let loop: ('a * ('a -> ('a, 'b) sum)) -> 'b
+(** GENERIC ITERATIVE LOOP **) 
+
+(* a simple version of loop *)
+let simple_loop: ('a * ('a -> ('a, 'b) sum)) -> 'b
   = fun (a0, f) ->
     let rec iter: 'a -> 'b
       = fun a ->
@@ -110,36 +113,24 @@ let loop: ('a * ('a -> ('a, 'b) sum)) -> 'b
     in
     iter a0;;
 
-(* a much too naive implementation !*)
-let rec posTr: BinNums.positive -> int
-= function
-  | BinNums.Coq_xH -> 1
-  | BinNums.Coq_xO p -> (posTr p)*2
-  | BinNums.Coq_xI p -> (posTr p)*2+1;;
+(* loop from while *)
+let while_loop: ('a * ('a -> ('a, 'b) sum)) -> 'b
+  = fun (a0, f) ->
+    let s = ref (f a0) in
+    while (match !s with Coq_inl _ -> true | _ -> false) do
+      match !s with
+      | Coq_inl a -> s:=f a
+      | _ -> assert false
+    done;
+    match !s with
+    | Coq_inr b -> b
+    | _ -> assert false;;
+
+let loop = simple_loop
 
 
-let zTr: BinNums.coq_Z -> int
-= function
-  | BinNums.Z0 -> 0
-  | BinNums.Zpos p -> posTr p
-  | BinNums.Zneg p -> - (posTr p)
-
-let string_of_Z: BinNums.coq_Z -> pstring
-= fun p -> CamlStr (string_of_int (zTr p))
-
-let timer ((f:'a -> 'b), (x:'a)) : 'b =
-  Gc.compact();
-  let itime = (Unix.times()).Unix.tms_utime in
-  let r = f x in
-  let rt = (Unix.times()).Unix.tms_utime -. itime in
-  Printf.printf "time = %f\n" rt;
-  r
-
-let xrec_mode = ref MemoRec
-
-let xrec_set_option : recMode -> unit
-= fun m -> xrec_mode := m
-
+(** GENERIC FIXPOINTS **)
+  
 let std_rec (recf: ('a -> 'b ) -> 'a -> 'b): 'a -> 'b =
   let rec f x = recf f x in
   f
@@ -172,6 +163,11 @@ let buggy_rec (recf: ('a -> 'b ) -> 'a -> 'b): 'a -> 'b =
        r
   in f
 
+let xrec_mode = ref MemoRec
+
+let xrec_set_option : recMode -> unit
+= fun m -> xrec_mode := m
+
 let xrec : (('a -> 'b ) -> 'a -> 'b ) -> ('a -> 'b )
   = fun recf ->
     match !xrec_mode with
@@ -179,3 +175,32 @@ let xrec : (('a -> 'b ) -> 'a -> 'b ) -> ('a -> 'b )
     | MemoRec -> memo_rec recf
     | BareRec -> bare_rec recf
     | BuggyRec -> buggy_rec recf
+
+
+(** MISC **)
+
+       
+(* a much too naive implementation !*)
+let rec posTr: BinNums.positive -> int
+= function
+  | BinNums.Coq_xH -> 1
+  | BinNums.Coq_xO p -> (posTr p)*2
+  | BinNums.Coq_xI p -> (posTr p)*2+1;;
+
+
+let zTr: BinNums.coq_Z -> int
+= function
+  | BinNums.Z0 -> 0
+  | BinNums.Zpos p -> posTr p
+  | BinNums.Zneg p -> - (posTr p)
+
+let string_of_Z: BinNums.coq_Z -> pstring
+= fun p -> CamlStr (string_of_int (zTr p))
+
+let timer ((f:'a -> 'b), (x:'a)) : 'b =
+  Gc.compact();
+  let itime = (Unix.times()).Unix.tms_utime in
+  let r = f x in
+  let rt = (Unix.times()).Unix.tms_utime -. itime in
+  Printf.printf "time = %f\n" rt;
+  r
