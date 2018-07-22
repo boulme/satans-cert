@@ -34,4 +34,4 @@ The main code of `santans-cert` is defined in [SatAnsCert.v](coq_src/SatAnsCert.
 
 - [bin/](bin) contains scripts to wrap `satans-cert` options.
 
-- [FibExample_build/](FibExample_build) is a "build" directory for source file [FibExample.v](FibExample.v). This example demonstrates the "certification for free" of a generic memoizing fixpoint operator, ie by using only its polymorphic ML type + a bit of defensive checks.
+- [FibExample_build/](FibExample_build) is a "build" directory for source file [FibExample.v](coq_src/FibExample.v). This example demonstrates the "certification for free" of a generic memoizing fixpoint operator, ie by using only its polymorphic ML type + a bit of defensive checks.
