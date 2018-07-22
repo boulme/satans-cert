@@ -18,7 +18,7 @@ We prove that
 
   - if "UNSAT !" is finally printed then the CNF returned by `read_input` is unsat.
 
-Technically, the two above properties are ensured by an `ASSERT` in each branch leading a to the corresponding print command.
+Technically, the two above properties are ensured by an `ASSERT` in each branch leading to the corresponding `println` command.
 
 ## Overview of the certified code
 
