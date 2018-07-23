@@ -19,6 +19,8 @@ This lemma is applied in [FibExample](FibExample.v) to prove the partial correct
 
 - [ImpConfig](ImpConfig.v) declares the `Impure` monad and defines its extraction.
 
+- [ImpCore](ImpCore.v) defines notations for the `Impure` monad and a `wlp` tactic (to reason about `Impure` functions in a Hoare-logic style).
+
 - [ImpPrelude](ImpPrelude.v) declares types used in the types of `Impure` oracles.
 
 - [ImpExtern](ImpExtern.v) declares `Impure` oracles and defines operators from these oracles.
