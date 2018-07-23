@@ -179,14 +179,11 @@ let xrec : (('a -> 'b ) -> 'a -> 'b ) -> ('a -> 'b )
 
 (** MISC **)
 
-       
-(* a much too naive implementation !*)
 let rec posTr: BinNums.positive -> int
 = function
   | BinNums.Coq_xH -> 1
   | BinNums.Coq_xO p -> (posTr p)*2
   | BinNums.Coq_xI p -> (posTr p)*2+1;;
-
 
 let zTr: BinNums.coq_Z -> int
 = function
@@ -194,8 +191,24 @@ let zTr: BinNums.coq_Z -> int
   | BinNums.Zpos p -> posTr p
   | BinNums.Zneg p -> - (posTr p)
 
-let string_of_Z: BinNums.coq_Z -> pstring
+let ten = BinNums.Zpos (BinNums.Coq_xO (BinNums.Coq_xI (BinNums.Coq_xO BinNums.Coq_xH)))
+
+let rec string_of_pos (p:BinNums.positive) (acc: pstring): pstring
+= let (q,r) = BinIntDef.Z.pos_div_eucl p ten in       
+  let acc0 = Concat (CamlStr (string_of_int (zTr r)), acc) in    
+  match q with
+  | BinNums.Z0 -> acc0
+  | BinNums.Zpos p0 -> string_of_pos p0 acc0
+  | _ -> assert false
+
+let string_of_Z_debug: BinNums.coq_Z -> pstring
 = fun p -> CamlStr (string_of_int (zTr p))
+
+let string_of_Z: BinNums.coq_Z -> pstring
+= function
+  | BinNums.Z0 -> CamlStr "0"
+  | BinNums.Zpos p -> string_of_pos p (CamlStr "")
+  | BinNums.Zneg p -> Concat (CamlStr "-", string_of_pos p (CamlStr ""))
 
 let timer ((f:'a -> 'b), (x:'a)) : 'b =
   Gc.compact();

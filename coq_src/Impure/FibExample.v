@@ -83,6 +83,7 @@ Definition test: ?? unit :=
   TRY
      xrec_set_option MemoRec;;
      print_fib "starting Memoized fib(40)" sfib 40;;
+     print_fib "starting Memoized fib(10000)" sfib 10000;;
      xrec_set_option BareRec;;
      println "# Now computation with naive or buggy fixpoints";;
      print_fib "starting Bare pfib(40)" pfib 40;;
@@ -109,5 +110,5 @@ Import ImpConfig.
 
 Extraction Blacklist List String.
 
-Separate Extraction ImpExtern TestFib.
+Separate Extraction BinIntDef ImpExtern TestFib.
 

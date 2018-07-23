@@ -1,4 +1,4 @@
-# `Impure`: importing OCaml functions as non-deterministic.
+# `Impure`: importing OCaml functions as non-deterministic ones.
 
 The principle of this library is to encode the type `A -> B` of an
 OCaml function as a type `A -> ?? B` in Coq, where `?? B` is the type
