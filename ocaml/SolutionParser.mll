@@ -68,25 +68,25 @@ rule find_s = parse
 | newline  { Lexing.new_line lexbuf; find_s lexbuf }
 | space    { find_s lexbuf }
 | unsat { Unsat }
-| sat { Sat (find_v lexbuf) }
+| sat { Sat (find_v PositiveSet.Leaf lexbuf) }
 | eof { failwith "Syntax error: can't find s line" }
 | _  { Lexing.new_line lexbuf; find_s lexbuf }
 
-and find_v = parse
-| newline  { Lexing.new_line lexbuf; find_v lexbuf }
-| space    { find_v lexbuf }
-| 'v' { solution PositiveSet.Leaf lexbuf }
-| eof { failwith "Syntax error: can't find v line" }
-| _  { Lexing.new_line lexbuf; find_v lexbuf }
+and find_v s = parse
+| newline  { Lexing.new_line lexbuf; find_v s lexbuf }
+| space    { find_v s lexbuf }
+| 'v' { solution s lexbuf }
+| eof { failwith "Syntax error: can't find v lines properly finished by 0" }
+| _  { Lexing.new_line lexbuf; find_v s lexbuf }
     
 and solution s = parse
-| newline  { Lexing.new_line lexbuf; solution s lexbuf }
+| newline  { Lexing.new_line lexbuf; find_v s lexbuf }
 | space { solution s lexbuf }
 | '0'  { s }
 | positive as i { solution (PositiveSet.add (int_to_positive (mklit i)) s) lexbuf }
-| integer { Lexing.new_line lexbuf; solution s lexbuf }
-| eof { failwith "Bad ending" }
-| _ { failwith "Syntax error" }
+| integer { solution s lexbuf }
+| eof { failwith "Syntax error: v line ended by end-of-file (without 0)" }
+| _ as c { failwith (Printf.sprintf "Syntax error: unexpected character '%c'" c) }
 
 {
 
