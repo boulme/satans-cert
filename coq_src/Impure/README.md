@@ -4,9 +4,9 @@ The principle of this library is to encode the type `A -> B` of an
 OCaml function as a type `A -> ?? B` in Coq, where `?? B` is the type
 of an axiomatized monad that can be interpreted as `B -> Prop`.  In
 other word, this encoding abstracts an OCaml function as a function
-returning a "set" of possible results, ie a relation between its
-parameter and its result. Side-effects are simply ignored. And
-reasoning on such function is only possible in partial correctness.
+returning a set of possible results (ie a relation between its
+parameter and its result). Side-effects are simply ignored. And
+reasoning on such a function is only possible in partial correctness.
 
 However, we can prove in Coq parametricity properties about polymorphic OCaml functions (we conjecture that it is sound to do it).
 This corresponds to prove, by reasoning only on their type, that these functions preserve some invariants.
