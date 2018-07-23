@@ -8,8 +8,8 @@ returning a postcondition on its possible results (ie a relation between its
 parameter and its result). Side-effects are simply ignored. And
 reasoning on such a function is only possible in partial correctness.
 
-A major feature of this cooperation between Coq and OCaml typechecker is to provide very simple parametric proofs about polymorphic OCaml functions.
-They correspond to prove, by reasoning only on their type, that these functions preserve some invariants.
+A major feature of this cooperation between Coq and OCaml typechecker is to provide very simple [parametric proofs](http://homepages.inf.ed.ac.uk/wadler/topics/parametricity.html) about polymorphic OCaml functions.
+They correspond here to prove, by reasoning only on their type, that these functions preserve some invariants.
 As an example, we prove the partial correctness of a generic memoizing fixpoint operator: see `rec_correct` lemma at the end of [ImpExtern](ImpExtern.v).
 This lemma is applied in [FibExample](FibExample.v) to prove the partial correctness of a memoized version of the naive Fibonacci function.
 However, currently, the soundness of these parametric proofs is still a conjecture.
@@ -26,5 +26,5 @@ However, currently, the soundness of these parametric proofs is still a conjectu
 
 - [ImpExtern](ImpExtern.v) declares `Impure` oracles and defines operators from these oracles.
 
-- [ocaml/](ocaml/) subdirectory containing the OCaml implementation of `Impure` oracles.
+- [ocaml/](ocaml/) subdirectory containing the OCaml implementations of `Impure` oracles.
 
