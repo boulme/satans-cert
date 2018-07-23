@@ -24,7 +24,7 @@ See also bash scripts in [bin/](https://github.com/boulme/satans-cert/tree/maste
 
 ## Code Overview
 
-The main code of `santans-cert` is defined in [SatAnsCert.v](coq_src/SatAnsCert.v) together with its partial correctness proof, see [coq_src/](coq_src/) for details.
+The main code of `santans-cert` is defined in [SatAnsCert.v](coq_src/SatAnsCert.v) together with its partial correctness proof, see [coq_src/README](coq_src/) for details.
 
 - [coq_src/](coq_src) contains all our Coq sources, including the [Impure](coq_src/Impure) library as a subdirectory and the OCaml oracles of this library.
 
@@ -34,4 +34,4 @@ The main code of `santans-cert` is defined in [SatAnsCert.v](coq_src/SatAnsCert.
 
 - [bin/](bin) contains scripts to wrap `satans-cert` options.
 
-- [FibExample_build/](FibExample_build) is a "build" directory for source file [FibExample.v](coq_src/Impure/FibExample.v). It illustrates another application of our `Impure` library: how to "certify for free" an external generic memoizing fixpoint operator, ie by using only its polymorphic ML type + a bit of defensive checks.
+- [FibExample_build/](FibExample_build) is a "build" directory for source file [FibExample.v](coq_src/Impure/FibExample.v). It illustrates another application of our `Impure` library: how to "certify for free" an external generic memoizing fixpoint operator, ie by using only its polymorphic ML type + a bit of defensive checks. See [Impure/README](coq_src/Impure) for details.
