@@ -1,9 +1,5 @@
 (** Impure monad for interface with impure code
 
-Little reasoning support is provided in ltac.
-
-TODO: add observational equivalence !
-
 *)
 
 Require Export Program.

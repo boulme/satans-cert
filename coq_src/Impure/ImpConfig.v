@@ -26,7 +26,7 @@ For example, it may lead to extract the following code as "true" (instead of an 
 *)
 Extract Inlined Constant bind => "(|>)".
 
-Extract Constant t "" => "". (* TODO: Un peu étrange, non ? *)
+Extract Constant t "" => "". (* This weird directive extracts [t] as "'a" instead of "'a t" *)
 Extraction Inline t.
 
 (** Comment the above code and decomment this to test that coq proofs still work with an impure monad !
