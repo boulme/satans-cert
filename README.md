@@ -14,7 +14,41 @@ led by [David Monniaux](http://www-verimag.imag.fr/~monniaux/).
 
 ## Installation
 
+### Requirements
+
+1. [ocaml](https://ocaml.org/docs/install.html). Tested with versions >= 4.05 and <= 4.06.1. (But other versions should work too).
+
+2. [ocamlbuild](https://github.com/ocaml/ocamlbuild). Tested with version 0.12.0. (But other versions should work too).
+
+3. [coq](https://coq.inria.fr/). Tested with versions >= 8.7.2 and <= 8.8.1. Here, other versions are likely to not work !
+
+### Compilation of `satans-cert`
+
+From the root of the repository, simply run:
+
     make -C ocaml/
+
+NB: this first compiles the Coq sources and extract them in `ocaml/coq_extracted` before running `ocamlbuild`.
+
+Then, if you want to test than everything is ok, run:
+
+    make -C examples/
+
+### Optional installation of `drat-trim`
+
+Simply clone and `make` the [drat-trim repository](https://github.com/marijnheule/drat-trim).
+Then make `drat-trim` executable known from your PATH.
+
+NB: `drat-trim` is needed to produce LRAT proofs from DRAT proofs produced by state-of-the-art SAT-solvers.
+
+### Optional installation of state-of-the-art SAT-solvers
+
+We have tried several state-of-the-art SAT-solvers like [CaDiCaL](http://fmv.jku.at/cadical/), [CryptoMinisat 5](https://github.com/msoos/cryptominisat),
+[Glucose 4](http://www.labri.fr/perso/lsimon/glucose/) or [Riss 4.27](http://tools.computational-logic.org/content/riss.php).
+
+The simplest way is to download directly the source of such SAT solvers from the "SAT competition" pages.
+For example, go to [the SAT Competition 2018 page](http://sat2018.forsyte.tuwien.ac.at/index.php?cat=solvers).
+Then make these executables known from your PATH.
 
 ## Usage
 
@@ -45,7 +79,6 @@ led by [David Monniaux](http://www-verimag.imag.fr/~monniaux/).
     -lazy 	 skip recomputation if auxiliary file exists, and preserve these files anyway
 
     -help  Display this list of options
-
 
 
 See also bash scripts in [bin/](https://github.com/boulme/satans-cert/tree/master/bin) to wrap a given sat solver,
