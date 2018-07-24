@@ -24,6 +24,9 @@ type oracle_data = {
 let remove_on_cleaning (d: oracle_data) (s: string) =
   Hashtbl.replace d.to_cleanup s ()
 
+let is_removed_on_cleaning (d: oracle_data) (s: string) =
+  Hashtbl.mem d.to_cleanup s
+
 let protect_from_cleaning (d: oracle_data) (s: string) =
   Hashtbl.remove d.to_cleanup s
     

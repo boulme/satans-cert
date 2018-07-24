@@ -41,7 +41,20 @@ let finalize_options: oracle_data -> unit =
         remove_on_cleaning d d.lrat_file;
         remove_on_cleaning d d.solver_outfile
       )
-    )
+    );
+    (* print relevant options *)
+    Printf.printf "* run by: %s \"%s\" " Sys.argv.(0) Sys.argv.(1);
+    (match d.mode with
+    | LRatCheck ->
+       Printf.printf "-l \"%s\"" d.lrat_file
+    | LRatRecompute ->
+       Printf.printf "-d \"%s\" -drat-file \"%s\" -lrat-file \"%s\"" d.drattrim d.drat_file d.lrat_file;
+       if not (is_removed_on_cleaning d d.lrat_file) then Printf.printf " -lazy"
+    | _ ->
+       Printf.printf "-s \"%s\" -outfile \"%s\"  -d \"%s\" -drat-file \"%s\" -lrat-file \"%s\"" d.solver d.solver_outfile d.drattrim d.drat_file d.lrat_file;
+       if d.mode=Lazy then Printf.printf " -lazy");
+    print_newline()
+
 
 (* IDs of the clause of the cnf (1...nb_clauses) *)
 let mk_problem_ids: int -> int list
@@ -73,8 +86,8 @@ let parse_command_line =
   let d = default_config() in
   let c = options d in
   parse c (fun s -> ();) ("  usage: "^Sys.argv.(0)^" <input.cnf> [ <OPTION> ... ]\n  where <input.cnf> is a file in DIMACS format\n");
-  finalize_options d;
   (if Array.length Sys.argv < 2 then failwith "no argument");
+  finalize_options d;
   let cnf_in = open_in Sys.argv.(1) in
   let (cnf,nb_var) = DimacsParser.parse(cnf_in) in
   d.mk_var<-ImpOracles.memo_int2pos nb_var;
