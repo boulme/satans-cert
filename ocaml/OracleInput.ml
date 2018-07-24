@@ -24,9 +24,15 @@ let options: oracle_data -> (key * spec * doc) list =
 (* action to perform just after having read the options *)
 let finalize_options: oracle_data -> unit =
   fun d ->
-    if d.solver="" && d.mode = Recompute then (
-      d.mode <- LRatRecompute;
-      remove_on_cleaning d d.lrat_file      
+    if d.solver="" then (
+      if d.mode = Recompute then (
+        d.mode <- LRatRecompute;
+        remove_on_cleaning d d.lrat_file
+      ) else if not (Sys.file_exists d.lrat_file) then (
+        d.mode <- LRatRecompute                     
+      ) else (
+        d.mode <- LRatCheck
+      )
     ) else (
       remove_on_cleaning d d.drat_file;
       if d.mode = Lazy && Sys.file_exists d.lrat_file then (
@@ -111,8 +117,6 @@ let clrat_next_int =
 	if nth_bit x 7 = 0 then acc+((clear_nth_bit x 7) lsl (i*7)) else clrat_next_int_rec cin (acc+((clear_nth_bit x 7) lsl (i*7))) (i+1)
   in
   clrat_map (clrat_next_int_rec cin 0 0)
-
-
 
 let clrat_next_ctl
     =fun cin ->
