@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# tested with riss version 4.27
 
 mydir="$(cd "$(dirname $0)"; pwd)"
 

@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# tested with CryptoMiniSat version 5.6.3
 
 mydir="$(cd "$(dirname $0)"; pwd)"
 

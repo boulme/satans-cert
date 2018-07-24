@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# tested with the CaDiCaL of SAT Competition 2018
 
 mydir="$(cd "$(dirname $0)"; pwd)"
 

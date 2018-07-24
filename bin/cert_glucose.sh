@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# tested with glucose 4.1 and 4.2.1
 
 mydir="$(cd "$(dirname $0)"; pwd)"
 
