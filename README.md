@@ -19,7 +19,7 @@ led by [David Monniaux](http://www-verimag.imag.fr/~monniaux/).
 ## Usage
 
 
-        bin/satans-cert <input.cnf> [ <OPTION> ... ]
+        satans-cert <input.cnf> [ <OPTION> ... ]
 
     where <input.cnf> is a file in DIMACS format
 
