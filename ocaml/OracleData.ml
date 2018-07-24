@@ -1,4 +1,4 @@
-type compute_mode = Recompute | Lazy | LRatCheck
+type compute_mode = Recompute | Lazy | LRatCheck | LRatRecompute
 
 module IntHash =
 struct
