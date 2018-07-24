@@ -18,9 +18,38 @@ led by [David Monniaux](http://www-verimag.imag.fr/~monniaux/).
 
 ## Usage
 
-    bin/satans-cert -help
 
-See also bash scripts in [bin/](https://github.com/boulme/satans-cert/tree/master/bin) to wrap a given sat solver
+        bin/satans-cert <input.cnf> [ <OPTION> ... ]
+
+    where <input.cnf> is a file in DIMACS format
+
+    -l [LRAT_FILE] 	 just check LRAT_FILE
+
+    -s [SOLVER] where SOLVER is the command running the solver:
+        solver's input is given on standard input (in DIMACS format)
+	    solver's answer has to be on standard output (in DIMACS format)
+	    solver's DRAT proof has to be in a file named "proof.out" 
+		    or which named is given with -drat-file option
+		NB: if SOLVER is the empty string (default case) then DRATTRIM is attempted on DRAT_FILE
+
+    -outfile [DIMACS_OUT_FILE] 	 name of the auxiliary DIMACS FILE OUTPUT from the sat solver 
+
+    -d [DRATTRIM] 	 where DRATTRIM is the command running drat-trim (default is "drat-trim")
+
+    -drat-file [DRAT_FILE] 	 name of the auxiliary DRAT_FILE 
+
+    -lrat-file [LRAT_FILE] 	 name of the auxiliary LRAT_FILE 
+
+    -f 	 force recomputation and remove generated auxiliary files (default)
+
+    -lazy 	 skip recomputation if auxiliary file exists, and preserve these files anyway
+
+    -help  Display this list of options
+
+
+
+See also bash scripts in [bin/](https://github.com/boulme/satans-cert/tree/master/bin) to wrap a given sat solver,
+or direct invocation in [bug_examples/](bug_examples)
 
 ## Code Overview
 
