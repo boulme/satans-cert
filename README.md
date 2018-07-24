@@ -30,7 +30,9 @@ The main code of `santans-cert` is defined in [SatAnsCert.v](coq_src/SatAnsCert.
 
 - [ocaml/](ocaml) contains our OCaml oracles for `satans-cert`.
 
-- [examples/](examples) contains CNF examples in DIMACS format.
+- [bug_examples/](bug_examples) contains examples using `satans-cert`.
+
+- [examples/](examples) contains other CNF examples in DIMACS format.
 
 - [bin/](bin) contains scripts to wrap `satans-cert` options.
 
