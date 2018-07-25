@@ -12,17 +12,37 @@ die() {
     exit 1
 }
 
-# trap Ctrl+C (otherwise, only subprocessed will be trapped)
+tmp_name() {
+    echo "/tmp/$(basename $1)_$$.cnf"
+}
 
-trap 'echo " bye!"; exit 1' INT
+cleaning() {
+    if [ "x${TMP}" != "x" ]; then
+        rm -f "${TMP}" && echo "* ${TMP} removed !"
+    fi
+}
+
+# trap Ctrl+C to perform cleaning...
+trap 'cleaning; exit 1' INT
 
 # DEFAULT INITIALIZATIONS
 
 DRATTRIM="drat-trim"
 INPUT="$1"
+TMP=""
 
 if [ -f "${INPUT}" ]; then
-    PREFIX="${INPUT%.cnf}" # default prefix
+    PREFIX="${INPUT%.cnf*}" # default prefix
+    case "${INPUT}" in
+        # TODO: consider other compression format ?
+        *.bz2 | *.bzip2 )
+            TMP="$(tmp_name ${PREFIX})"
+            echo "* found a bzip2 file: starting decompression in ${TMP}"
+            bzip2 -c -d "${INPUT}" > "${TMP}" || exit 1
+            echo "* decompression finished"
+            INPUT="${TMP}"
+            ;;
+    esac
     shift
 else
     die "the first argument \"${INPUT}\" is not an existing file (expects a .cnf file)"
@@ -37,4 +57,5 @@ drat_file() {
 
 cert_solver(){
     ${mydir}/satans-cert "${INPUT}"  -s "${SOLVER}" -d "${DRATTRIM}" -outfile "${PREFIX}.out" -drat-file "$(drat_file)" -lrat-file "${PREFIX}.lrat" "$@"
+    cleaning
 }
