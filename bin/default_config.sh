@@ -6,7 +6,9 @@ mydir="$(cd "$(dirname $0)"; pwd)"
 
 die() {
     echo "ERROR: $@" 1>&2
+    echo 1>&2  
     echo "NB: ${myself} has the same command-line than satans-cert (see below)" 1>&2  
+    echo "except that *.cnf.bz2 are also supported in input." 1>&2  
     echo 1>&2  
     ${mydir}/satans-cert -help 1>&2   
     exit 1
@@ -45,7 +47,7 @@ if [ -f "${INPUT}" ]; then
     esac
     shift
 else
-    die "the first argument \"${INPUT}\" is not an existing file (expects a .cnf file)"
+    die "the first argument \"${INPUT}\" is not an existing file (expects a .cnf or .cnf.bz2 file)"
     exit 1
 fi
 
