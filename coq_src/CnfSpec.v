@@ -6,9 +6,9 @@ Local Open Scope list_scope.
 
 Definition var := positive.
 
-Record literal := { is_pos: bool ; ident: var }.
-
 Definition model := var -> bool.
+
+Record literal := { is_pos: bool ; ident: var }.
 
 (* syntactic clause *)
 Definition clause := list literal.
@@ -19,9 +19,9 @@ Fixpoint sat (c: clause) (m: model): Prop :=
   | l::c' => m (ident l) = is_pos l \/ sat c' m
   end.
 
+(* syntactic cnf *)
 Definition cnf := list clause.
 
-(* syntactic cnf *)
 Fixpoint sats (f: cnf) (m: model): Prop :=
   match f with
   | nil => True

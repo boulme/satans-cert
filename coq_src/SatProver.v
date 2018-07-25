@@ -1,8 +1,18 @@
+(** Certified checker that a CNF is sat. *)
+
 Require Export CnfSpec.
 Require Import MSets.MSetPositive.
 Import PositiveSet.
 
 Require Import Bool.
+
+(** Currently, a concrete model defines the finite set of variables that are assigned to true.
+    Other variables are implicitely assigned to false.
+
+TODO: we may refine to consider also the dual representation (the finite set of variables that are assigned to false),
+and let the oracle choose the more efficient representation.
+
+*)
 
 Definition concrete_model: Type := PositiveSet.t.
 
