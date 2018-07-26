@@ -25,6 +25,12 @@ let run_command: oracle_data -> string -> string -> unit =
     Printf.printf "CPU time %f\n" (xtime -. input.external_time);
     input.external_time <- xtime
 
+let start_lrat_check: oracle_data -> solver_Answer
+  = fun d ->
+    OracleInput.lratreader_init d.lrat_file;
+    start_certification d false;
+    UNSAT_Answer
+
 (* execute only drat-trim to make the lrat file *)
 let mk_lrat: solver_Input -> string -> solver_Answer
   = fun input name ->
@@ -34,8 +40,7 @@ let mk_lrat: solver_Input -> string -> solver_Answer
       let line = Printf.sprintf "%s %s %s -L %s %s" drattrim name g.drat_file g.lrat_file chut in
       Printf.printf "starting drat-trim...\t%!";
       run_command g "drat-trim" line;
-      OracleInput.lratreader_init (g.lrat_file);
-      UNSAT_Answer 
+      start_lrat_check g
       
 (* execute the sat-solver to make a model, or if unsat, make the lrat file*)
 let sat_solver: solver_Input -> solver_Answer
@@ -44,11 +49,8 @@ let sat_solver: solver_Input -> solver_Answer
       let g=input.global in
       let satsolver = g.solver in
       match g.mode with
-      | LRatCheck ->
-         OracleInput.lratreader_init (g.lrat_file);
-	 UNSAT_Answer
-      | LRatRecompute ->
-         mk_lrat input name
+      | LRatCheck -> start_lrat_check g
+      | LRatRecompute -> mk_lrat input name
       | _ -> ( 
 	 if g.mode=Recompute || not (Sys.file_exists g.solver_outfile) then (
 	    Printf.printf "starting solver...\t%!";
@@ -58,7 +60,7 @@ let sat_solver: solver_Input -> solver_Answer
 	 let res = SolutionParser.parse (open_in g.solver_outfile) in
 	 match res with
 	 | Sat cm ->
-	    Printf.printf "check sat...\n%!";
+	    start_certification g true;
 	    SAT_Answer cm
 	 | Unsat ->
             remove_on_cleaning g g.solver_outfile; (* this file is now useless *)

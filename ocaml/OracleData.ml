@@ -17,6 +17,8 @@ type oracle_data = {
   mutable lrat_file: string;
   mutable mode: compute_mode;
   mutable mk_var: int -> CnfSpec.var;
+  mutable answer: bool option;
+  mutable starting_time: float;
   mutable external_time: float;
   to_cleanup: (string,unit) Hashtbl.t; 
 }
@@ -29,7 +31,14 @@ let is_removed_on_cleaning (d: oracle_data) (s: string) =
 
 let protect_from_cleaning (d: oracle_data) (s: string) =
   Hashtbl.remove d.to_cleanup s
-    
+
+let start_certification (d: oracle_data) (b: bool) =
+  let msg = if b then "sat" else "unsat" in
+  Printf.printf "trying certification of %s..." msg;
+  print_newline();
+  d.answer <- Some b;
+  d.starting_time <- (Unix.times()).Unix.tms_utime
+
 let cleaning: oracle_data -> unit
   = fun d ->
     Hashtbl.iter (fun s _ -> try Sys.remove s with _ -> ()) d.to_cleanup

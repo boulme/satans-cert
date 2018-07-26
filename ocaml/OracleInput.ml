@@ -78,6 +78,8 @@ let default_config() = {
   lrat_file="proof.lrat";
   mode=Recompute;
   mk_var=ImpOracles.memo_int2pos 0;
+  answer=None;
+  starting_time=0.0;
   external_time=0.0;
   to_cleanup = Hashtbl.create 10;
 }
@@ -100,19 +102,20 @@ let read_input () =
     
 let print_time: solver_Input -> unit
   = fun input ->
-    let my_time = (Unix.times()).Unix.tms_utime in
-    let xtime = input.global.external_time in
+    let g=input.global in
+    let my_time = (Unix.times()).Unix.tms_utime -. g.starting_time in
+    let xtime = g.external_time in
     if xtime > 0.0 then (
-      Printf.printf "* solver + drat-trim time = %f\n" xtime;    
-      Printf.printf "* additional certification time = %f\n" my_time;
+      Printf.printf "* solver %stime = %f\n" (if g.answer=Some true then "" else "+ drat-trim ") xtime;    
+      Printf.printf "* additional certification time (without DIMACS parsing) = %f\n" my_time;
       Printf.printf "* overhead of additional certification time = %f%%\n" (my_time *. 100. /. xtime)
     ) else (
-      Printf.printf "* total time = %f\n" my_time;
+      Printf.printf "* total time (without DIMACS parsing) = %f\n" my_time;
     )
       
 let finalize: solver_Input -> unit
   = fun input ->
-    print_time input;
+    if input.global.answer<>None then print_time input;
     cleaning input.global
 
 (* clrat *)
@@ -205,6 +208,5 @@ let lratreader_init : string -> unit =
        lrat_reader_f_ref := (fun () -> clrat_next_line cin);
        lratreader_next ());
     );
-
 
 
