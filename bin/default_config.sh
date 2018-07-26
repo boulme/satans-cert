@@ -41,7 +41,7 @@ if [ -f "${INPUT}" ]; then
             TMP="$(tmp_name ${PREFIX})"
             echo "* found a bzip2 file: starting decompression in ${TMP}"
             bzip2 -c -d "${INPUT}" > "${TMP}" || exit 1
-            echo "* decompression finished"
+            echo "* size(kB;vars;clauses):$(du -ks ${TMP} | awk -F ' ' -e '{print $1}');$(grep -e '^p cnf' ${TMP} | awk -F ' ' -e '{print $3";"$4}')"
             INPUT="${TMP}"
             ;;
     esac
