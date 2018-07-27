@@ -24,6 +24,18 @@ cleaning() {
     fi
 }
 
+stats_input() {
+    kB="$(du -ks ${INPUT} | awk -F ' ' -e '{print $1}')"
+    lines=$(($(wc -l ${INPUT} | awk -F ' ' -e '{print $1}')-1))
+    head="$(grep -e '^p cnf' ${INPUT} | awk -F ' ' -e '{print $3";"$4}')"
+    clauses="$(echo ${head} | awk -F ';' -e '{print $2}')"
+    echo "* size(kB;lines;vars;clauses):${kB};${lines};${head}"
+    if [[ ${lines} -ne ${clauses} ]] ; then
+        echo "ERROR: inconsistent clause number ! (See above) "
+        exit 1
+    fi
+}
+
 # trap Ctrl+C to perform cleaning...
 trap 'cleaning; exit 1' INT
 
@@ -40,9 +52,11 @@ if [ -f "${INPUT}" ]; then
         *.bz2 | *.bzip2 )
             TMP="$(tmp_name ${PREFIX})"
             echo "* found a bzip2 file: starting decompression in ${TMP}"
-            bzip2 -c -d "${INPUT}" > "${TMP}" || exit 1
-            echo "* size(kB;vars;clauses):$(du -ks ${TMP} | awk -F ' ' -e '{print $1}');$(grep -e '^p cnf' ${TMP} | awk -F ' ' -e '{print $3";"$4}')"
+            bzip2 -c -d "${INPUT}" | grep -v "^c" > "${TMP}" || exit 1
+            # NB: the line above is less correct but more efficient
+            # bzip2 -c -d "${INPUT}" | grep -e "^p " -e "^[0-9]" -e "^-" > "${TMP}" || exit 1
             INPUT="${TMP}"
+            stats_input
             ;;
     esac
     shift
