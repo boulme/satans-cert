@@ -17,10 +17,13 @@ type oracle_data = {
   mutable lrat_file: string;
   mutable mode: compute_mode;
   mutable mk_var: int -> CnfSpec.var;
+  to_cleanup: (string,unit) Hashtbl.t;
+  (* below fields are only for stats *)
   mutable answer: bool option;
   mutable starting_time: float;
   mutable external_time: float;
-  to_cleanup: (string,unit) Hashtbl.t; 
+  mutable ratbunchc: int;
+  mutable ratc: int;
 }
 
 let remove_on_cleaning (d: oracle_data) (s: string) =

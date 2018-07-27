@@ -78,10 +78,12 @@ let default_config() = {
   lrat_file="proof.lrat";
   mode=Recompute;
   mk_var=ImpOracles.memo_int2pos 0;
+  to_cleanup = Hashtbl.create 5;
   answer=None;
   starting_time=0.0;
   external_time=0.0;
-  to_cleanup = Hashtbl.create 10;
+  ratbunchc=0;
+  ratc=0;
 }
 	
 (* parse the command line and read the cnf *)
@@ -105,6 +107,17 @@ let print_time: solver_Input -> unit
     let g=input.global in
     let my_time = (Unix.times()).Unix.tms_utime -. g.starting_time in
     let xtime = g.external_time in
+    if g.answer=Some false then (
+      if g.ratbunchc=0 then (
+        Printf.printf "* ONLY RUP!\n";
+      ) else (
+        Printf.printf "* nb of RAT bunch:%d\n" g.ratbunchc;
+        if g.ratc != 0 then (
+          Printf.printf "* nb of RAT:%d\n" g.ratc;
+          Printf.printf "* bunch size mean:%f\n" ((float_of_int g.ratc)/.(float_of_int g.ratbunchc))
+        ) (* else: RAT count has been commented *)
+      )
+    );
     if xtime > 0.0 then (
       Printf.printf "* solver %stime = %f\n" (if g.answer=Some true then "" else "+ drat-trim ") xtime;    
       Printf.printf "* additional certification time (without DIMACS parsing) = %f\n" my_time;

@@ -313,12 +313,16 @@ let check_rup : 'a rupLCF -> (int -> var) -> 'a IntHashtbl.t -> 'ratInput -> 'a 
 let rec next_rat : (('a rupLCF * 'a list) * solver_Input) -> ('a,'a coq_RatInput) sum
   = fun ((rc,c),input) ->
     try
+      let g=input.global in
       (* converting the cnf: from 'a list to 'a IntHashtbl *)
       let ht_cnf = mk_learned_clauses rc c in
       (* check_rup parse lrat file and process cnf until a rat line or an empty clause (end of the proof) is found *)
       match (check_rup rc input.global.mk_var ht_cnf None) with
       | Line rio ->
-	 let ri = ratInput_to_coq_RatInput ht_cnf input.global.mk_var rio in
+	 let ri = ratInput_to_coq_RatInput ht_cnf g.mk_var rio in
+         g.ratbunchc <- g.ratbunchc + 1;
+         (* NB: decomment the line below in order to have stats on the size of RAT bunches (at the price of a little overhead) *)
+         (* g.ratc <- g.ratc + List.length(ri.bunch); *)
 	 Coq_inr ri
       | RupClause rclause -> Coq_inl rclause
     with
