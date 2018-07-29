@@ -20,7 +20,12 @@ let pstring_to_string =
 let run_command: oracle_data -> string -> string -> unit =
   fun input name line ->
     let ec = Sys.command line in
-    (if(ec==127) then failwith ("Can't execute "^name));
+    (match ec with
+     | 0 -> ()
+     | 10 -> () (* SAT exit for SAT solvers *)
+     | 20 -> () (* UNSAT exit for SAT solvers *)
+     | 127 -> failwith (Printf.sprintf "Can't execute %s" name)
+     | _ -> failwith (Printf.sprintf "Command %s failed" name));
     let xtime = (Unix.times()).Unix.tms_cutime in
     Printf.printf "CPU time %f\n" (xtime -. input.external_time);
     input.external_time <- xtime
