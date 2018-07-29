@@ -44,12 +44,13 @@ NB: `drat-trim` is needed to produce LRAT proofs from DRAT proofs produced by st
 
 ### Optional installation of state-of-the-art SAT-solvers
 
-We have tried several state-of-the-art SAT-solvers like [CaDiCaL](http://fmv.jku.at/cadical/), [CryptoMinisat 5](https://github.com/msoos/cryptominisat),
-[Glucose 4](http://www.labri.fr/perso/lsimon/glucose/) or [Riss 4.27](http://tools.computational-logic.org/content/riss.php).
+We have tried several state-of-the-art SAT-solvers like [CaDiCaL](http://fmv.jku.at/cadical/), [CryptoMinisat 4.5.3](http://baldur.iti.kit.edu/sat-competition-2016/solvers/main/cmsat5_main2.zip), [CryptoMinisat 5](https://github.com/msoos/cryptominisat), [Glucose 4](http://www.labri.fr/perso/lsimon/glucose/) or [Riss 4.27](http://tools.computational-logic.org/content/riss.php).
 
-The simplest way is to download directly the source of such SAT solvers from the "SAT competition" pages.
-For example, go to [the SAT Competition 2018 page](http://sat2018.forsyte.tuwien.ac.at/index.php?cat=solvers).
+The simplest way is to download directly the source of such SAT solvers from the [SAT competition](http://www.satcompetition.org/) pages, like
+ [the SAT Competition 2018 page](http://sat2018.forsyte.tuwien.ac.at/index.php?cat=solvers).
 Then make these executables known from your PATH.
+
+NB: in our experiments, [CryptoMinisat 4.5.3](http://baldur.iti.kit.edu/sat-competition-2016/solvers/main/cmsat5_main2.zip) and [Riss 4.27](http://tools.computational-logic.org/content/riss.php) have been the only solvers to produce non-RUP RAT clauses. All others have only produced DRUP proofs.
 
 ## Usage
 
