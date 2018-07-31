@@ -118,12 +118,13 @@ let print_time: solver_Input -> unit
         ) (* else: RAT count has been commented *)
       )
     );
+    Printf.printf "* satans-cert DIMACS parsing time = %f\n" g.starting_time;
     if xtime > 0.0 then (
       Printf.printf "* solver %stime = %f\n" (if g.answer=Some true then "" else "+ drat-trim ") xtime;    
       Printf.printf "* additional certification time (without DIMACS parsing) = %f\n" my_time;
       Printf.printf "* overhead of additional certification time = %f%%\n" (my_time *. 100. /. xtime)
     ) else (
-      Printf.printf "* total time (without DIMACS parsing) = %f\n" my_time;
+      Printf.printf "* certification time (without DIMACS parsing) = %f\n" my_time;
     )
       
 let finalize: solver_Input -> unit
