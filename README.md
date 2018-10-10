@@ -6,7 +6,7 @@ Actually, we have been inspired by the ["Efficient Certified RAT Verification" p
 
 Our main contribution is to base the design of our certified checker on a [parametricity](http://homepages.inf.ed.ac.uk/wadler/topics/parametricity.html) property of ML polymorphic types, in order to keep the Coq code as lightweight as possible.
 See details in our [slides from the Coq workshop 2018](https://coqworkshop2018.inria.fr/files/2018/07/coq2018_talk_boulme.pdf).
-This technique is provided by our [Impure](coq_src/Impure) library, itself inspired from the [Verified Polyhedra Library](https://github.com/VERIMAG-Polyhedra/VPL). Actually, we wish to put this `Impure` library in a separate repository. But this would currently be rather inconvenient because of the lack of a "Separate Extraction" in Coq that is truly compatible with OCaml separate compilation, see feature wish [coq#8042](https://github.com/coq/coq/issues/8042).
+This technique is provided by our [Impure](https://github.com/boulme/Impure) library located here at [coq_src/Impure/](coq_src/Impure/) as a [git-subrepo](https://github.com/ingydotnet/git-subrepo). Actually, we wish to put this `Impure` library as a true separate library. But this would currently be rather inconvenient because of the lack of a "Separate Extraction" in Coq that is truly compatible with OCaml separate compilation, see feature wish [coq#8042](https://github.com/coq/coq/issues/8042).
 
 ## Credits
 
@@ -17,11 +17,11 @@ led by [David Monniaux](http://www-verimag.imag.fr/~monniaux/).
 
 ### Requirements
 
-1. [ocaml](https://ocaml.org/docs/install.html). Tested with versions >= 4.05 and <= 4.06.1. (But other versions should work too).
+1. [ocaml](https://ocaml.org/docs/install.html). Tested with versions >= 4.05 and <= 4.07.0. (But other versions should work too).
 
 2. [ocamlbuild](https://github.com/ocaml/ocamlbuild). Tested with version 0.12.0. (But other versions should work too).
 
-3. [coq](https://coq.inria.fr/). Tested with versions >= 8.7.2 and <= 8.8.1. Here, other versions are likely to not work !
+3. [coq](https://coq.inria.fr/). Tested with versions >= 8.7.2 and <= 8.8.2. Here, other versions are likely to not work !
 
 ### Compilation of `satans-cert`
 
@@ -102,5 +102,3 @@ At last, file [sudoku9-1.lrat](examples/sudoku9-1.lrat) gives a UNSAT proof (in 
 by [drat-trim](https://www.cs.utexas.edu/~marijn/drat-trim/).
 
 - [bin/](bin) contains scripts to wrap `satans-cert` options.
-
-- [FibExample_build/](FibExample_build) is a "build" directory for source file [FibExample.v](coq_src/Impure/FibExample.v). It illustrates another application of our `Impure` library: how to "certify for free" an external generic memoizing fixpoint operator, ie by using only its polymorphic ML type + a bit of defensive checks. See [Impure/README](coq_src/Impure) for details.

@@ -77,7 +77,7 @@ let default_config() = {
   drat_file="proof.out";
   lrat_file="proof.lrat";
   mode=Recompute;
-  mk_var=ImpOracles.memo_int2pos 0;
+  mk_var=ImpIOOracles.memo_int2pos 0;
   to_cleanup = Hashtbl.create 5;
   answer=None;
   starting_time=0.0;
@@ -95,7 +95,7 @@ let parse_command_line =
   finalize_options d;
   let cnf_in = open_in Sys.argv.(1) in
   let (cnf,nb_var) = DimacsParser.parse(cnf_in) in
-  d.mk_var<-ImpOracles.memo_int2pos nb_var;
+  d.mk_var<-ImpIOOracles.memo_int2pos nb_var;
   close_in cnf_in;
   { problem=mk_cnf d.mk_var cnf; problem_ids=mk_problem_ids (List.length cnf); name=ImpPrelude.CamlStr Sys.argv.(1); global=d }
 

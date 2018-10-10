@@ -3,6 +3,9 @@ Impure/ImpPrelude.v
 Impure/ImpMonads.v
 Impure/ImpConfig.v
 Impure/ImpCore.v
+Impure/ImpIO.v
+Impure/ImpLoops.v
+Impure/ImpHCons.v
 Impure/ImpExtern.v
 CnfSpec.v
 SatProver.v
