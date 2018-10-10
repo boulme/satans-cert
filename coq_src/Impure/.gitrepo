@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:boulme/Impure.git
+	branch = master
+	commit = 45e7f5c7ee81be079dc154c56c34292e26d82f55
+	parent = 71c28ea8a094bb6b8af13211028be5828cb6e33b
+	cmdver = 0.3.1
