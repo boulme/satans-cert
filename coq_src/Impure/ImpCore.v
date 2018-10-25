@@ -8,7 +8,7 @@ Require Export ImpConfig.
 (* Theory: bind + embed => dbind 
 
 Program Definition dbind {A B} (k1: t A) (k2: forall (a:A), (mayRet k1 a) -> t B) : t B
-  := bind (callproof k1) (fun a => k2 a _).
+  := bind (mk_annot k1) (fun a => k2 a _).
 
 Lemma mayRet_dbind: forall (A B:Type) k1 k2 (b:B),
      mayRet (dbind k1 k2) b -> exists a:A, exists H: (mayRet k1 a), mayRet (k2 a H) b.
@@ -185,47 +185,3 @@ Ltac wlp_xsimplify hint :=
 Create HintDb wlp discriminated.
 
 Ltac wlp_simplify := wlp_xsimplify ltac:(intuition eauto with wlp).
-
-
-(*** Observational equivalence ***)
-
-Require Export Setoid.
-Require Export Relation_Definitions.
-Require Export Morphisms.
-
-Hint Rewrite @impeq_bind_ret_l @impeq_bind_ret_r @impeq_bind_assoc: impeq.
-Hint Immediate (fun A x => @Equivalence_Reflexive _ _ (@impeq_equiv A) x).
-
-Add Parametric Morphism (A:Type): (@wlp A) with
-    signature (@impeq A) ==> (pointwise_relation A iff) ==> iff
-    as wlp_compat.
-Proof.
-    intros k1 k2 H P Q H0. unfold pointwise_relation, iff in H.
-    constructor 1; unfold wlp; intros.
-    rewrite <- H in * |- ; firstorder.
-    rewrite H in * |-; firstorder.
-Qed.
-
-Lemma List_fold_left_impeq_run (A B:Type) (f: B -> A -> ?? A) (l:list B) (i: ?? A):
-   impeq (List.fold_left (fun k x => bind k (f x)) l i)
-         (bind i (fun a => List.fold_left (fun k x => bind k (f x)) l (ret a))).
-Proof.
-    simpl. 
-    generalize i.
-    induction l as [| a0 l IHl]; simpl.
-    - intros; autorewrite with impeq; auto.
-    - intros; rewrite IHl.
-      autorewrite with impeq.
-      apply bind_eq_compat. 
-      + auto.
-      + intros a. rewrite IHl; auto;
-           autorewrite with impeq; auto.  
-Qed.
-
-Lemma wlp_List_fold_left (A B:Type) (f: B -> A -> ?? A) (l:list B) (i: ?? A) (P: A -> Prop): 
-    wlp i (fun a => wlp (List.fold_left (fun k x => bind k (f x)) l (ret a)) P)
-     -> wlp (List.fold_left (fun k x => bind k (f x)) l i) P.
-Proof.
-  intros H; rewrite List_fold_left_impeq_run.
-  apply wlp_bind. auto.
-Qed.

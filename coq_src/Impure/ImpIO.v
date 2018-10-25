@@ -17,6 +17,9 @@ Extract Constant print => "ImpIOOracles.print".
 Axiom println: pstring -> ?? unit.
 Extract Constant println => "ImpIOOracles.println".
 
+Axiom read_line: unit -> ?? pstring.
+Extract Constant read_line => "ImpIOOracles.read_line".
+
 Require Import ZArith.
 Axiom string_of_Z: Z -> ?? pstring.
 Extract Constant string_of_Z => "ImpIOOracles.string_of_Z".
@@ -82,10 +85,10 @@ Qed.
 
 Program Definition try_with_fail_ensure {A} (k1: unit -> ?? A) (k2: pstring -> exn -> ??A) (P: A -> Prop | wlp (k1 tt) P /\ (forall s e, wlp (k2 s e) P)): ?? { r | P r }
   := TRY
-        DO r <~ callproof (k1 tt);; 
+        DO r <~ mk_annot (k1 tt);; 
         RET (exist P r _)
      WITH_FAIL s, e => 
-        DO r <~ callproof (k2 s e);;
+        DO r <~ mk_annot (k2 s e);;
         RET (exist P r _).
 Obligation 2.
   unfold wlp in * |- *; eauto.
