@@ -416,7 +416,7 @@ End brc_check_correct.
 
 (* rup learning *)
 Program Definition learn {mod: model -> Prop} (f: list (wclause mod)) (cid: clause_id) (c: cclause) : ?? wclause mod 
- := callproof (brc_check f c);; RET {| id:= cid; rep := c |}.
+ := mk_annot (brc_check f c);; RET {| id:= cid; rep := c |}.
 Obligation 1.
   eapply brc_check_correct; eauto.
 Qed.

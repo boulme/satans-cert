@@ -405,7 +405,7 @@ Program Definition rat_check_one (l:literal) (c1: cclause) {mod: model -> Prop} 
            | true => FAILWITH rat_msg1
            | false => RET _
            end
-  | _ => callproof (brc_check brc (aresol l c1 (rep c2)));; RET _
+  | _ => mk_annot (brc_check brc (aresol l c1 (rep c2)));; RET _
   end.
 Obligation 1.
   apply isPivot_redundant; auto.
