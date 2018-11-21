@@ -27,9 +27,9 @@ Local Hint Resolve rep_sat.
 
 Program Definition unsatProver input : forall f, ?? ~(exists m, csats f m) := 
   loop_until_None 
-     (fun (f: ccnf) => exists m, csats f m) (* loop invariant *)
      (unsatProver_loop_body input)
-     _.
+     (fun (f: ccnf) => exists m, csats f m) (* loop invariant *)
+     .
 Obligation 1.
   wlp_simplify.
   eapply isEmpty_correct; eauto.
