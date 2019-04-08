@@ -8,6 +8,8 @@ Our main contribution is to base the design of our certified checker on a [param
 See details in our [slides from the Coq workshop 2018](https://coqworkshop2018.inria.fr/files/2018/07/coq2018_talk_boulme.pdf).
 This technique is provided by our [Impure](https://github.com/boulme/Impure) library located here at [coq_src/Impure/](coq_src/Impure/) as a [git-subrepo](https://github.com/ingydotnet/git-subrepo). Actually, we wish to put this `Impure` library as a true separate library. But this would currently be rather inconvenient because of the lack of a "Separate Extraction" in Coq that is truly compatible with OCaml separate compilation, see feature wish [coq#8042](https://github.com/coq/coq/issues/8042).
 
+See [our draft paper on this work](https://hal.archives-ouvertes.fr/hal-02062288).
+
 ## Credits
 
 [Sylvain Boulmé](mailto:Sylvain.Boulme@univ-grenoble-alpes.fr) and Thomas Vandendorpe from [Verimag](http://www-verimag.imag.fr/), supported by [ERC Stator](http://stator.imag.fr/w/index.php/Main_Page)
@@ -17,11 +19,11 @@ led by [David Monniaux](http://www-verimag.imag.fr/~monniaux/).
 
 ### Requirements
 
-1. [ocaml](https://ocaml.org/docs/install.html). Tested with versions >= 4.05 and <= 4.07.0. (But other versions should work too).
+1. [ocaml](https://ocaml.org/docs/install.html). Tested with versions >= 4.05 and <= 4.07.1. (But other versions should work too).
 
-2. [ocamlbuild](https://github.com/ocaml/ocamlbuild). Tested with version 0.12.0. (But other versions should work too).
+2. [ocamlbuild](https://github.com/ocaml/ocamlbuild). Tested with version 0.12.0 abd 0.14.0. (But other versions should work too).
 
-3. [coq](https://coq.inria.fr/). Tested with versions >= 8.7.2 and <= 8.8.2. Here, other versions are likely to not work !
+3. [coq](https://coq.inria.fr/). Tested with versions >= 8.7.2 and <= 8.9.0. Here, other versions are likely to not work !
 
 ### Compilation of `satans-cert`
 

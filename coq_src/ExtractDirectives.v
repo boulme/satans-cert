@@ -8,4 +8,4 @@ Import ImpConfig.
 
 Extraction Blacklist List String.
 
-Separate Extraction BinIntDef Impure.ImpPrelude Rup SatAnsCert.
+Separate Extraction BinInt Impure.ImpPrelude Rup SatAnsCert.
